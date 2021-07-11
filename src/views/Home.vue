@@ -6,7 +6,7 @@
           v-for="pokemon in pokemonList"
           :key="pokemon.id"
           cols="12"
-          xl="3"
+          xl="2"
           lg="3"
           md="4"
           sm="6"
@@ -18,19 +18,7 @@
             />
 
             <v-card-actions>
-              <v-spacer></v-spacer>
-
-              <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>mdi-bookmark</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>mdi-share-variant</v-icon>
-              </v-btn>
+              
             </v-card-actions>
           </v-card>
         </v-col>
@@ -115,6 +103,7 @@
   border-radius: 2rem;
   height: fit-content;
   min-height: 90vh;
+  padding: 1.5rem 3rem;
 }
 .card-background {
   border: 5px solid rgb(230, 230, 22) !important;
