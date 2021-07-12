@@ -34,7 +34,7 @@
           </b-avatar>
         </b-col>
         <b-col class="py-0">
-          <span class="game-font subtitle px-5">{{pokemon.weight / 10}} kg, {{pokemon.height / 10}} m</span>
+          <span class="game-font subtitle w-75 px-4">{{pokemon.weight / 10}} kg, {{pokemon.height / 10}} m</span>
         </b-col>
       </b-row>
   </b-container>
