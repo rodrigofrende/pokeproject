@@ -21,13 +21,13 @@
               </v-btn>
 
               <v-btn icon>
-                <v-icon>mdi-information</v-icon>
+                <v-icon @click="showPokemonModal(pokemon)">mdi-information</v-icon>
               </v-btn>
             </b-nav>
           </b-list-group-item>
           <b-avatar
             button
-            class="ml-1"
+            class="ml-1 bg-transparent"
             @click="changeSprite()"
             square size="9rem"
             :src="isFrontSprite ? pokemon.sprites.front_default : pokemon.sprites.back_default">
@@ -37,10 +37,16 @@
           <span class="game-font subtitle w-75 px-4">{{pokemon.weight / 10}} kg, {{pokemon.height / 10}} m</span>
         </b-col>
       </b-row>
+      <PokemonModal 
+        :show="showModal"
+        :pokemon="pokemon"
+        @closeModal="closeModal"
+      />
   </b-container>
 </template>
 
 <script>
+import PokemonModal from '@/components/PokemonModal'
 export default {
   name: 'PokemonCard',
   props: {
@@ -48,14 +54,25 @@ export default {
       type: Object
     }
   },
+  components: {
+    PokemonModal
+  },
   data () {
     return {
-      isFrontSprite: true
+      isFrontSprite: true,
+      showModal: false
     }
   },
   methods: {
-    changeSprite() {
+    changeSprite () {
       this.isFrontSprite = !this.isFrontSprite
+    },
+    showPokemonModal (pokemon) {
+      console.log(pokemon)
+      this.showModal = true
+    },
+    closeModal () {
+      this.showModal = false
     }
   }
 }
@@ -80,5 +97,13 @@ export default {
   padding: 0.1rem 0.1rem;
   border: none;
   background-color: transparent !important;
+}
+.btn-secondary.focus,.btn-secondary.hover, .btn-secondary:focus, .btn-secondary:hover {
+    color: #fff;
+    background-color: none;
+    border-color: none !important;
+    box-shadow: none !important;
+    /* CURSOR FIX */
+    cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAzElEQVRYR+2X0Q6AIAhF5f8/2jYXZkwEjNSVvVUjDpcrGgT7FUkI2D9xRfQETwNIiWO85wfINfQUEyxBG2ArsLwC0jioGt5zFcwF4OYDPi/mBYKm4t0U8ATgRm3ThFoAqkhNgWkA0jJLvaOVSs7j3qMnSgXWBMiWPXe94QqMBMBc1VZIvaTu5u5pQewq0EqNZvIEMCmxAawK0DNkay9QmfFNAJUXfgGgUkLaE7j/h8fnASkxHTz0DGIBMCnBeeM7AArpUd3mz2x3C7wADglA8BcWMZhZAAAAAElFTkSuQmCC) 14 0,pointer !important;
 }
 </style>
