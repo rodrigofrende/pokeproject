@@ -51,6 +51,10 @@
     }),
     async mounted () {
       await this.$store.dispatch('getListOfPokemons')
+      var data = JSON.parse(localStorage.getItem("myTeam"))
+      if (data) {
+        this.$store.dispatch('setPokemonTeam', data)
+      }
     },
     computed: {
       pokemonList () {

@@ -9,19 +9,37 @@ const store = new Vuex.Store({
     state: {
       pokemonDataList: [],
       favoritePokemonList: [],
-      loadingData: false
+      loadingData: false,
+      myTeam: []
     },
     mutations: {
       setLoadingData (state, status) {
         state.loadingData = status
       },
+      addPokemon (state, payload) {
+        debugger
+        const dto = {
+          id: payload.id,
+          order: payload.order,
+          name: payload.name,
+          sprites: payload.sprites
+        }
+        state.myTeam.push(dto)
+        localStorage.setItem("myTeam", JSON.stringify(state.myTeam));
+      },
       async setPokemonList (state, payload) {
         payload.sort((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
         state.pokemonDataList = payload
         console.log('Pokemon list', state.pokemonDataList)
+      },
+      fillMyTeam (state, payload) {
+        state.myTeam = payload
       }
     },
     actions: {
+      setPokemonTeam ({ commit }, team) {
+        commit('fillMyTeam', team)
+      },
       async getListOfPokemons ({ commit }) {
         commit('setLoadingData', true)
         const data = await axios.get('https://pokeapi.co/api/v2/pokemon/?limit=151')
@@ -36,6 +54,9 @@ const store = new Vuex.Store({
           commit('setPokemonList', allDataPokemonList)
         }
         commit('setLoadingData', false)
+      },
+      addToMyTeam ({ commit }, pokemon) {
+        commit('addPokemon', pokemon)
       }
     },
     modules: {

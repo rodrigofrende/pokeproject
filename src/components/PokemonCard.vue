@@ -17,7 +17,7 @@
               </v-btn>
 
               <v-btn icon>
-                <v-icon>mdi-plus-circle</v-icon>
+                <v-icon @click="addToMyTeam(pokemon)">mdi-plus-circle</v-icon>
               </v-btn>
 
               <v-btn icon>
@@ -63,9 +63,42 @@ export default {
       showModal: false
     }
   },
+  computed: {
+    myTeam () {
+      return this.$store.state.myTeam
+    }
+  },
   methods: {
     changeSprite () {
       this.isFrontSprite = !this.isFrontSprite
+    },
+    async addToMyTeam (pokemon) {
+      const alreadyAdded = this.myTeam.find(x => x.id === pokemon.id)
+
+      if (alreadyAdded) {
+        return this.$notify({
+          group: 'foo',
+          type: 'error',
+          title: 'Error',
+          text: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) + ' ya se encuentra en tu equipo.',
+        })
+      }
+      if (this.myTeam.length < 6) {
+        await this.$store.dispatch('addToMyTeam', pokemon)
+        this.$notify({
+          group: 'foo',
+          type: 'success',
+          title: 'Éxito !',
+          text: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) + ' fue agregado a tu equipo.',
+        })
+      } else {
+        return this.$notify({
+          group: 'foo',
+          type: 'error',
+          title: 'Error',
+          text: 'Tu equipo está lleno.',
+        })
+      }
     },
     showPokemonModal (pokemon) {
       console.log(pokemon)
