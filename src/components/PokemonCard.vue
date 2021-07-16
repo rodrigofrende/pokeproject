@@ -16,8 +16,11 @@
                 <v-icon  >mdi-heart</v-icon>
               </v-btn>
 
-              <v-btn icon>
+              <v-btn icon v-if="!allreadyAdded(pokemon.id)">
                 <v-icon @click="addToMyTeam(pokemon)">mdi-plus-circle</v-icon>
+              </v-btn>
+              <v-btn icon v-else>
+                <v-icon @click="remove(pokemon)">mdi-minus-circle</v-icon>
               </v-btn>
 
               <v-btn icon>
@@ -69,10 +72,29 @@ export default {
     }
   },
   methods: {
+    allreadyAdded (id) {
+      const isAdded = this.myTeam.find(x => x.id === id)
+      return isAdded
+    },
+    remove (pokemon) {
+      var index = this.myTeam.map(x => {
+        return x.id;
+      }).indexOf(pokemon.id);
+
+      this.myTeam.splice(index, 1);
+      return this.$notify({
+        group: 'foo',
+        type: 'info',
+        title: 'Info',
+        text: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) + ' fue removido de tu equipo.',
+      })
+    },
     changeSprite () {
       this.isFrontSprite = !this.isFrontSprite
     },
     async addToMyTeam (pokemon) {
+      // change icon to ADD o REMOVE pokemon del team
+      // add persistance to fav pokemons
       const alreadyAdded = this.myTeam.find(x => x.id === pokemon.id)
 
       if (alreadyAdded) {
@@ -96,7 +118,7 @@ export default {
           group: 'foo',
           type: 'error',
           title: 'Error',
-          text: 'Tu equipo está lleno.',
+          text: 'Tu equipo está lleno.'
         })
       }
     },

@@ -1,10 +1,10 @@
 <template>
   <b-container class="px-0 rounded-header" >
     <b-nav align="center" class="game-font">
-      <b-nav-item class="mx-2 no-padding">
+      <b-nav-item to="/" class="mx-2 no-padding">
         <img src="@/assets/pokeball.png" height="40px" width="40px" alt="pokeball">
       </b-nav-item>
-      <b-nav-item >Equipo</b-nav-item>
+      <b-nav-item to="/MyTeam" >Equipo</b-nav-item>
       <b-nav-item >Acerca de</b-nav-item>
     </b-nav>
   </b-container>

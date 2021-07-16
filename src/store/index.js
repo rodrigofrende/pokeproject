@@ -17,7 +17,6 @@ const store = new Vuex.Store({
         state.loadingData = status
       },
       addPokemon (state, payload) {
-        debugger
         const dto = {
           id: payload.id,
           order: payload.order,

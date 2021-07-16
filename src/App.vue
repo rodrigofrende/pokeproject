@@ -26,6 +26,22 @@ export default {
   color: #2c3e50;
   height: 100%;
 }
+.btn-pokemon {
+  background-color: #2C64B4 !important;
+  color: white !important;
+}
+.btn-pokemon:hover {
+  background-color: #2C64B4 !important;
+  color: #242424 !important;
+  opacity: 0.99;
+}
+.white-background {
+  background-color: #fff !important;
+  border-radius: 2rem;
+  height: fit-content;
+  min-height: 90vh;
+  padding: 1.5rem 3rem;
+}
 .black-background {
   min-height: 100vh !important;
   background: #242424 !important;

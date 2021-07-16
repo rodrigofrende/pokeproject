@@ -102,13 +102,6 @@
   }
 </script>
 <style scoped>
-.white-background {
-  background-color: #fff !important;
-  border-radius: 2rem;
-  height: fit-content;
-  min-height: 90vh;
-  padding: 1.5rem 3rem;
-}
 .card-background {
   border: 5px solid rgb(230, 230, 22) !important;
 }
