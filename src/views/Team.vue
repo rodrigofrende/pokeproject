@@ -3,7 +3,12 @@
   <b-row v-if="myTeam.length > 0">
     <!-- <b-col cols="12" md="4" > -->
       <v-col
-        cols="6"
+        cols="12"
+        xl="6"
+        lg="6"
+        md="6"
+        sm="12"
+        xs="12"
         v-for="pokemon in myTeam"
         :key="pokemon.id"
       >

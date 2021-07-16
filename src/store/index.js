@@ -10,11 +10,24 @@ const store = new Vuex.Store({
       pokemonDataList: [],
       favoritePokemonList: [],
       loadingData: false,
-      myTeam: []
+      myTeam: [],
+      myFavs: []
     },
     mutations: {
       setLoadingData (state, status) {
         state.loadingData = status
+      },
+      addFav (state, payload) {
+        const dto = {
+          id: payload.id,
+          order: payload.order,
+          name: payload.name,
+          sprites: payload.sprites,
+          weight: payload.weight,
+          height: payload.height
+        }
+        state.myFavs.push(dto)
+        localStorage.setItem("myFavs", JSON.stringify(state.myFavs));
       },
       addPokemon (state, payload) {
         const dto = {
@@ -33,11 +46,17 @@ const store = new Vuex.Store({
       },
       fillMyTeam (state, payload) {
         state.myTeam = payload
+      },
+      fillMyFavs (state, payload) {
+        state.myFavs = payload
       }
     },
     actions: {
       setPokemonTeam ({ commit }, team) {
         commit('fillMyTeam', team)
+      },
+      setPokemonFavs ({ commit }, favs) {
+        commit('fillMyFavs', favs)
       },
       async getListOfPokemons ({ commit }) {
         commit('setLoadingData', true)
@@ -75,6 +94,9 @@ const store = new Vuex.Store({
       },
       addToMyTeam ({ commit }, pokemon) {
         commit('addPokemon', pokemon)
+      },
+      addToMyFavs ({ commit }, pokemon) {
+        commit('addFav', pokemon)
       }
     },
     modules: {

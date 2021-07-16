@@ -12,15 +12,18 @@
             <b-nav vertical class="game-font mx-2 my-auto">
               <v-spacer></v-spacer>
 
-              <v-btn color="red lighten-2" icon>
-                <v-icon  >mdi-heart</v-icon>
+              <v-btn icon v-if="!allreadyFaved(pokemon.id)">
+                <v-icon  @click="addToMyFavs(pokemon)"  >mdi-heart</v-icon>
+              </v-btn>
+              <v-btn  icon v-else>
+                <v-icon  @click="removeFav(pokemon)" class="red" >mdi-heart</v-icon>
               </v-btn>
 
               <v-btn icon v-if="!allreadyAdded(pokemon.id)">
-                <v-icon @click="addToMyTeam(pokemon)">mdi-plus-circle</v-icon>
+                <v-icon class="white" @click="addToMyTeam(pokemon)">mdi-plus-circle</v-icon>
               </v-btn>
               <v-btn icon v-else>
-                <v-icon @click="remove(pokemon)">mdi-minus-circle</v-icon>
+                <v-icon class="white" @click="remove(pokemon)">mdi-minus-circle</v-icon>
               </v-btn>
 
               <v-btn icon>
@@ -69,9 +72,16 @@ export default {
   computed: {
     myTeam () {
       return this.$store.state.myTeam
+    },
+    myFavs () {
+      return this.$store.state.myFavs
     }
   },
   methods: {
+    allreadyFaved (id) {
+      const isAdded = this.myFavs.find(x => x.id === id)
+      return isAdded
+    },
     allreadyAdded (id) {
       const isAdded = this.myTeam.find(x => x.id === id)
       return isAdded
@@ -89,12 +99,23 @@ export default {
         text: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) + ' fue removido de tu equipo.',
       })
     },
+    removeFav (pokemon) {
+      var index = this.myFavs.map(x => {
+        return x.id;
+      }).indexOf(pokemon.id);
+
+      this.myFavs.splice(index, 1);
+      return this.$notify({
+        group: 'foo',
+        type: 'info',
+        title: 'Info',
+        text: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) + ' fue removido de tus favoritos.',
+      })
+    },
     changeSprite () {
       this.isFrontSprite = !this.isFrontSprite
     },
     async addToMyTeam (pokemon) {
-      // change icon to ADD o REMOVE pokemon del team
-      // add persistance to fav pokemons
       const alreadyAdded = this.myTeam.find(x => x.id === pokemon.id)
 
       if (alreadyAdded) {
@@ -122,6 +143,15 @@ export default {
         })
       }
     },
+    async addToMyFavs (pokemon) {
+      await this.$store.dispatch('addToMyFavs', pokemon)
+        this.$notify({
+          group: 'foo',
+          type: 'success',
+          title: 'Éxito !',
+          text: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) + ' fue agregado a tus favoritos.',
+        })
+    },
     showPokemonModal (pokemon) {
       console.log(pokemon)
       this.showModal = true
@@ -136,6 +166,30 @@ export default {
 <style scoped>
 .v-card {
   border-radius: 0.8rem !important;
+}
+.mdi-heart.red {
+  color: red !important;
+}
+.mdi-information:hover {
+  color: rgba(0, 0, 0, 0.897) !important;
+}
+.mdi-heart.red:hover {
+  color: rgba(168, 6, 6, 0.39) !important;
+}
+.mdi-heart:hover {
+  color: rgba(255, 0, 0, 0.562) !important;
+}
+.mdi-minus-circle.white {
+  color: rgba(219, 219, 219, 0.726) !important;
+}
+.mdi-minus-circle.white:hover {
+  color: rgba(177, 17, 17, 0.726) !important;
+}
+.mdi-plus-circle.white {
+  color: rgba(219, 219, 219, 0.726) !important;
+}
+.mdi-plus-circle.white:hover {
+  color: rgba(255, 255, 255, 0.938) !important;
 }
 .game-font.subtitle {
   font-size: 0.6rem;

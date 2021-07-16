@@ -51,9 +51,13 @@
     }),
     async mounted () {
       await this.$store.dispatch('getListOfPokemons')
-      var data = JSON.parse(localStorage.getItem("myTeam"))
-      if (data) {
-        this.$store.dispatch('setPokemonTeam', data)
+      var team = JSON.parse(localStorage.getItem("myTeam"))
+      var favs = JSON.parse(localStorage.getItem("myFavs"))
+      if (team) {
+        this.$store.dispatch('setPokemonTeam', team)
+      }
+      if (favs) {
+        this.$store.dispatch('setPokemonFavs', favs)
       }
     },
     computed: {
