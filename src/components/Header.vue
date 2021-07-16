@@ -1,18 +1,25 @@
 <template>
   <b-container class="px-0 rounded-header" >
     <b-nav align="center" class="game-font">
-      <b-nav-item to="/" class="mx-2 no-padding">
+      <b-nav-item to="/" v-b-tooltip="{
+          title: 'Inicio',
+          placement: 'left',
+        }" class="mx-2 no-padding">
         <img src="@/assets/pokeball.png" height="40px" width="40px" alt="pokeball">
       </b-nav-item>
-      <b-nav-item to="/MyTeam" >Equipo</b-nav-item>
-      <b-nav-item >Acerca de</b-nav-item>
+      <b-nav-item class="px-2" to="/MyTeam" >Mi Equipo</b-nav-item>
+      <b-nav-item class="px-2" >Acerca de</b-nav-item>
     </b-nav>
   </b-container>
 </template>
 
 <script>
 export default {
-
+  computed: {
+    currentRouteName() {
+      return this.$route.name;
+    }
+  }
 }
 </script>
 
@@ -28,8 +35,9 @@ a.nav-link {
   color: white;
   font-size: 0.9rem !important;
 }
-a.nav-link.active {
+.router-link-active {
   color: white;
+  text-decoration-line: underline;
 }
 a.nav-link:hover {
   color: white;

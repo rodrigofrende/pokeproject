@@ -41,18 +41,37 @@ const store = new Vuex.Store({
       },
       async getListOfPokemons ({ commit }) {
         commit('setLoadingData', true)
-        const data = await axios.get('https://pokeapi.co/api/v2/pokemon/?limit=151')
-        const pokemonUrlList = data.data.results
-
-        var allDataPokemonList = []
-        if (pokemonUrlList.length > 0) {
-          for await (var item of pokemonUrlList){
-            const pokemon = await axios.get(`${item.url}`)
-            allDataPokemonList.push(pokemon.data)
-          }
-          commit('setPokemonList', allDataPokemonList)
+        
+        const promises = [];
+        for (let i = 1; i <= 150; i++) {
+          const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
+          promises.push(fetch(url).then(res => res.json()));
         }
-        commit('setLoadingData', false)
+        Promise.all(promises).then(results => {
+            const pokemon = results.map(data => ({
+              name: data.name,
+              id: data.id,
+              sprites: data.sprites, // ["front_default"]
+              types: data.types,
+              species: data.species,
+              height: data.height,
+              weight: data.weight,
+              ability: data.abilities.map(ability => ability.ability.name).join(','),
+              moves: data.moves.map(move => move.move.name).slice(0, 10).join(', ')
+            }));
+            sendData(pokemon);
+          })
+          .catch((reason) => {
+            if (reason === -999) {
+              console.error("Had previously handled error");
+            } else {
+              console.error(`Trouble with promiseGetWord(): ${reason}`);
+            }
+          })
+          function sendData(jsonData) {
+            commit('setPokemonList', jsonData)
+          }
+          commit('setLoadingData', false)
       },
       addToMyTeam ({ commit }, pokemon) {
         commit('addPokemon', pokemon)
