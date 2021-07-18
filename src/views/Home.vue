@@ -35,11 +35,13 @@
 
 <script>
   import PokemonCard from '@/components/PokemonCard'
+  import localData from '@/mixins/localData'
   export default {
     name: 'Home',
     components: {
       PokemonCard,
     },
+    mixins: [localData],
     data: () => ({
       value: 50,
       attrs: {
@@ -51,14 +53,7 @@
     }),
     async mounted () {
       await this.$store.dispatch('getListOfPokemons')
-      var team = JSON.parse(localStorage.getItem("myTeam"))
-      var favs = JSON.parse(localStorage.getItem("myFavs"))
-      if (team) {
-        this.$store.dispatch('setPokemonTeam', team)
-      }
-      if (favs) {
-        this.$store.dispatch('setPokemonFavs', favs)
-      }
+      this.getLocalStorageInfo()
     },
     computed: {
       pokemonList () {

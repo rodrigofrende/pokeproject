@@ -12,11 +12,15 @@
         v-for="pokemon in myTeam"
         :key="pokemon.id"
       >
-        <v-card >
-          <span>{{pokemon.name}}</span>
-          <v-card-actions>
-            
-          </v-card-actions>
+        <v-card class="d-flex">
+          <v-col cols="4" class="">
+            <b-avatar size="4rem" :src="pokemon.sprites.versions['generation-v']['black-white'].animated.front_default" />
+          </v-col>
+          <v-col cols="4" class="">
+            <span>{{pokemon.name}}</span>
+          </v-col>
+          <v-col cols="4" class="">
+          </v-col>
         </v-card>
       </v-col>
     <!-- </b-col> -->
@@ -34,6 +38,7 @@
 </template>
 
 <script>
+import localData from '@/mixins/localData'
 export default {
   name: 'Team',
   computed: {
@@ -41,6 +46,11 @@ export default {
       return this.$store.state.myTeam
     }
   },
+  mixins: [localData],
+  mounted () {
+    this.getLocalStorageInfo()
+    console.log('My team: ', this.myTeam)
+  }
 }
 </script>
 
