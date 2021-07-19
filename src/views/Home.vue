@@ -2,8 +2,18 @@
 <b-container class="white-background">
   <b-row v-if="pokemonList.length > 0">
     <!-- <b-col cols="12" md="4" > -->
+        <b-col sm="8" class="pt-3">
+        </b-col>
+        <b-col sm="4" class="pt-3">
+          <b-input-group size="sm" class="mb-2">
+            <b-input-group-prepend is-text>
+              <b-icon animation="" icon="search"></b-icon>
+            </b-input-group-prepend>
+            <b-form-input type="search" v-model="filterValue" placeholder="Buscar Pokemon..."></b-form-input>
+          </b-input-group>
+        </b-col>
       <v-col
-          v-for="pokemon in pokemonList"
+          v-for="pokemon in (isFilterActive ? filteredPokemonList : pokemonList)"
           :key="pokemon.id"
           cols="12"
           xl="2"
@@ -44,6 +54,9 @@
     mixins: [localData],
     data: () => ({
       value: 50,
+      filteredPokemonList: [],
+      isFilterActive: false,
+      filterValue: '',
       attrs: {
         class: 'mb-6',
         align: 'center',
@@ -58,6 +71,17 @@
     computed: {
       pokemonList () {
         return this.$store.state.pokemonDataList
+      }
+    },
+    watch: {
+      filterValue (val) {
+        if (val !== '') {
+          this.isFilterActive = true
+          this.filteredPokemonList = this.pokemonList.filter(x => x.name.toLowerCase().includes(val.toLowerCase()))
+        } else {
+          this.isFilterActive = false
+          this.filteredPokemonList = []
+        }
       }
     },
     methods: {
