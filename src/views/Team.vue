@@ -1,5 +1,5 @@
 <template>
-<b-container class="white-background">
+<b-container class="white-background"  data-app>
   <b-row v-if="myTeam.length > 0">
     <!-- <b-col cols="12" md="4" > -->
       <v-col
@@ -62,7 +62,44 @@
       <span class="btn-pokemon game-font">Tu equipo está vacio.</span>
     </b-col>
     <b-col cols="12 py-2">
-      <b-button @click="$router.push('/')" class="btn-pokemon game-font" >Agregar Pokemons</b-button>
+      <v-dialog
+        v-model="dialog"
+        width="500"
+      >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          class="btn-pokemon game-font"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          Agregar Pokemons
+        </v-btn>
+      </template>
+        <v-card>
+          <v-card-title class="game-font">
+            Crea tu Equipo
+          </v-card-title>
+          <v-card-text class="px-5 py-0">
+            <p class="game-font">Al agregar un Pokemon a tu equipo tenés 10% de probabilidades de que éste sea SHINY . Podes modificar tu equipo en todo momento, pero recordá que una vez saques al Pokemon todo el progreso que hayas tenido con el se va a perder.</p>
+            <p class="game-font">Además tenes la opción de enviar los datos de tu equipo, esto ayuda a que la aplicación crezca y cuenta con la información .</p>
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              text
+              class="game-font"
+              @click="goHome"
+            >
+              Entendido!
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </b-col>
   </b-row>
 </b-container>
@@ -76,6 +113,7 @@ export default {
   name: 'Team',
   data () {
     return {
+      dialog: false,
       exp: 55,
       totalExp: 0
     }
@@ -93,6 +131,11 @@ export default {
     this.getLocalStorageInfo()
   },
   methods: {
+    async goHome () {
+      this.dialog = false
+      //todo: loader
+      await this.$router.push('/')
+    },
     sendTeam () {
       const team = this.myTeam
       if (team.length === 6) {
