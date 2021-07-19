@@ -18,23 +18,33 @@ const store = new Vuex.Store({
         state.loadingData = status
       },
       addFav (state, payload) {
+        const isShiny = Math.random() < 0.15
         const dto = {
           id: payload.id,
           order: payload.order,
           name: payload.name,
           sprites: payload.sprites,
+          types: payload.types,
+          height: payload.height,
           weight: payload.weight,
-          height: payload.height
+          totalExp: payload.base_experience
         }
         state.myFavs.push(dto)
         localStorage.setItem("myFavs", JSON.stringify(state.myFavs));
       },
       addPokemon (state, payload) {
+        const isShiny = Math.random() < 0.15
         const dto = {
           id: payload.id,
+          isShiny: isShiny,
           order: payload.order,
           name: payload.name,
-          sprites: payload.sprites
+          sprites: payload.sprites,
+          types: payload.types,
+          height: payload.height,
+          weight: payload.weight,
+          exp: 0,
+          totalExp: payload.base_experience
         }
         state.myTeam.push(dto)
         localStorage.setItem("myTeam", JSON.stringify(state.myTeam));
@@ -73,8 +83,10 @@ const store = new Vuex.Store({
               sprites: data.sprites, // ["front_default"]
               types: data.types,
               species: data.species,
+              order: data.order,
               height: data.height,
               weight: data.weight,
+              base_experience: data.base_experience,
               ability: data.abilities.map(ability => ability.ability.name).join(','),
               moves: data.moves.map(move => move.move.name).slice(0, 10).join(', ')
             }));

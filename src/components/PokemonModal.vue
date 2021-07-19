@@ -46,9 +46,12 @@
 
 <script>
 import { getPokemonModalData } from '@/services/PokemonServices/api'
+import resolveImage from '@/mixins/resolveImage'
 import EnergyType from '@/components/EnergyType'
+
 export default {
   name: 'PokemonModal',
+  mixins: [resolveImage],
   components: {
     EnergyType
   },
@@ -71,46 +74,6 @@ export default {
   methods: {
     close () {
       this.$emit('closeModal')
-    },
-    resolveImage (type) {
-      switch (type) {
-        case 'grass':
-          return 'grass_type.png'
-        case 'poison':
-          return 'poison-type.png' 
-        case 'fire':
-          return 'fire_type.png'
-        case 'flying':
-          return 'fly-type.png'
-        case 'water':
-          return 'water_type.png'
-        case 'bug':
-          return 'bug-type.png'
-        case 'normal':
-          return 'normal-type.png'
-        case 'ground':
-          return 'ground_type.png'
-        case 'electric':
-          return 'electric_type.png'
-        case 'fairy':
-          return 'fairy-type.png'
-        case 'fighting':
-          return 'figth-type.png'
-        case 'psychic':
-          return 'psy-type.png'
-        case 'rock':
-          return 'rock-type.png'
-        case 'steel':
-          return 'steel-type.png'
-        case 'ice':
-          return 'ice-type.png'
-        case 'ghost':
-          return 'ghost-type.png'
-        case 'dragon':
-          return 'dragon-type.png'
-        default:
-          return ''
-      }
     },
     async loadModalData (url) {
       const data = await getPokemonModalData(url)
@@ -165,7 +128,7 @@ export default {
   cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAzElEQVRYR+2X0Q6AIAhF5f8/2jYXZkwEjNSVvVUjDpcrGgT7FUkI2D9xRfQETwNIiWO85wfINfQUEyxBG2ArsLwC0jioGt5zFcwF4OYDPi/mBYKm4t0U8ATgRm3ThFoAqkhNgWkA0jJLvaOVSs7j3qMnSgXWBMiWPXe94QqMBMBc1VZIvaTu5u5pQewq0EqNZvIEMCmxAawK0DNkay9QmfFNAJUXfgGgUkLaE7j/h8fnASkxHTz0DGIBMCnBeeM7AArpUd3mz2x3C7wADglA8BcWMZhZAAAAAElFTkSuQmCC) 14 0,pointer !important;
 }
 ::v-deep .close {
-    cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAzElEQVRYR+2X0Q6AIAhF5f8/2jYXZkwEjNSVvVUjDpcrGgT7FUkI2D9xRfQETwNIiWO85wfINfQUEyxBG2ArsLwC0jioGt5zFcwF4OYDPi/mBYKm4t0U8ATgRm3ThFoAqkhNgWkA0jJLvaOVSs7j3qMnSgXWBMiWPXe94QqMBMBc1VZIvaTu5u5pQewq0EqNZvIEMCmxAawK0DNkay9QmfFNAJUXfgGgUkLaE7j/h8fnASkxHTz0DGIBMCnBeeM7AArpUd3mz2x3C7wADglA8BcWMZhZAAAAAElFTkSuQmCC) 14 0,pointer !important;
+  cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAzElEQVRYR+2X0Q6AIAhF5f8/2jYXZkwEjNSVvVUjDpcrGgT7FUkI2D9xRfQETwNIiWO85wfINfQUEyxBG2ArsLwC0jioGt5zFcwF4OYDPi/mBYKm4t0U8ATgRm3ThFoAqkhNgWkA0jJLvaOVSs7j3qMnSgXWBMiWPXe94QqMBMBc1VZIvaTu5u5pQewq0EqNZvIEMCmxAawK0DNkay9QmfFNAJUXfgGgUkLaE7j/h8fnASkxHTz0DGIBMCnBeeM7AArpUd3mz2x3C7wADglA8BcWMZhZAAAAAElFTkSuQmCC) 14 0,pointer !important;
 }
 .subtitle {
   font-size: 0.6rem;
