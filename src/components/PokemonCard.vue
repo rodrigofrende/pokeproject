@@ -66,9 +66,11 @@
 </template>
 
 <script>
-import PokemonModal from "@/components/PokemonModal";
+import PokemonModal from "@/components/PokemonModal"
+import confirmation from '@/mixins/confirmation'
 export default {
   name: "PokemonCard",
+  mixins: [confirmation],
   props: {
     pokemon: {
       type: Object,
@@ -100,24 +102,34 @@ export default {
       const isAdded = this.myTeam.find((x) => x.id === id);
       return isAdded;
     },
-    remove(pokemon) {
-      this.dialog = true
-      var index = this.myTeam
-        .map((x) => {
-          return x.id;
+    async remove (pokemon) {
+        const body = ({
+          text: `${pokemon.name} va a ser removido de tu equipo y todo el progreso se perderá.`,
+          cancelTitle: 'Cancelar',
+          okTitle: 'Confirmar'
         })
-        .indexOf(pokemon.id);
+        const confirm = await this.showConfirmationBox(body)
 
-      this.myTeam.splice(index, 1);
-      return this.$notify({
-        group: "foo",
-        type: "info",
-        title: "Info",
-        text:
-          pokemon.name.charAt(0).toUpperCase() +
-          pokemon.name.slice(1) +
-          " fue removido de tu equipo.",
-      });
+        if (confirm) {
+          var index = this.myTeam
+          .map((x) => {
+            return x.id;
+          })
+          .indexOf(pokemon.id);
+
+          this.myTeam.splice(index, 1)
+          return this.$notify({
+            group: "foo",
+            type: "info",
+            title: "Info",
+            text:
+              pokemon.name.charAt(0).toUpperCase() +
+              pokemon.name.slice(1) +
+              " fue removido de tu equipo.",
+          })
+        } else {
+          return
+        }
     },
     removeFav(pokemon) {
       var index = this.myFavs
@@ -198,6 +210,17 @@ export default {
 </script>
 
 <style scoped>
+.font-text {
+  font-size: 0.8rem;
+}
+::v-deep .btn.btn-col.order-2:hover {
+  order: 1;
+  background-color: #2C64B4;
+}
+::v-deep .btn.btn-col.order-1:hover {
+  order: 1;
+  background-color: rgba(189, 22, 22, 0.842);
+}
 .v-card {
   border-radius: 0.8rem !important;
 }
