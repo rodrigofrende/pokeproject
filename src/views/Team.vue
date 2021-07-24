@@ -23,14 +23,20 @@
             <v-col cols="12 mt-4">
               <span id="exp-span" class="float-left mt-1 text-capitalize game-font">Exp:</span>
             </v-col>
-            <v-col cols="12 mt-1 py-1">
+            <v-col cols="12 d-flex">
               <v-progress-linear
                 :value="(pokemon.exp * 100) / pokemon.totalExp"
                 height="25"
                 rounded
+                class="mt-1 py-1"
               >
                 <strong>{{ pokemon.exp }} / {{pokemon.totalExp}}</strong>
               </v-progress-linear>
+              <v-btn class="pr-1" icon >
+                <v-icon class="ml-auto" @click="openEvolutionModal(pokemon)"
+                  >mdi-plus-circle</v-icon
+                >
+              </v-btn>
             </v-col>
           </v-col>
           <v-col cols="2" class="d-flex px-0">
@@ -45,9 +51,23 @@
         </v-card>
       </v-col>
     <!-- </b-col> -->
-    <b-col cols="12" class="my-3 game-font">
+    <v-col xl="6" lg="6" md="6" sm="12" xs="12" class="my-3 game-font">
       <span class="ml-3 float-left">Integrantes del Equipo: {{ myTeam.length }} / 6 </span>
-    </b-col>
+    </v-col>
+    <v-col xl="6" lg="6" md="6" sm="12" xs="12" class="my-3 game-font d-flex">
+      <span class="ml-3 float-left">Puntos restantes: {{ userData.points }} / 50 </span>
+      <v-icon v-b-tooltip="{
+        title: 'Tiempo restante para sumar 10 puntos: 15m',
+        placement: 'bottom',
+        customClass: 'left-0',
+      }"
+      class="ml-3">mdi-timer-sand</v-icon>
+      <v-icon class="ml-3" v-b-tooltip="{
+        title: 'Los puntos sirven para evolucionar a tu equipo, se reponen parcialmente cada 10m',
+        placement: 'bottom',
+        customClass: 'left-0',
+      }" >mdi-information</v-icon>
+    </v-col>
     <b-col cols="12" class="my-3 game-font">
       <b-button  v-b-tooltip="{
         title: 'Enviar los datos de tu equipo ayuda a recolectar información y mostrarla en la sección de Estadísticas.',
@@ -102,6 +122,11 @@
       </v-dialog>
     </b-col>
   </b-row>
+  <EvolutionModal 
+    :show="showEvolutionModal"
+    @closeModal="showEvolutionModal = false"
+    :pokemon="selectedPokemon"
+  />
 </b-container>
 </template>
 
@@ -109,28 +134,39 @@
 import EnergyType from '@/components/EnergyType'
 import localData from '@/mixins/localData'
 import resolveImage from '@/mixins/resolveImage'
+import EvolutionModal from '@/components/EvolutionModal'
 export default {
   name: 'Team',
   data () {
     return {
+      showEvolutionModal: false,
       dialog: false,
       exp: 55,
-      totalExp: 0
+      totalExp: 0,
+      selectedPokemon: null
     }
   },
   computed: {
     myTeam () {
       return this.$store.state.myTeam
+    },
+    userData () {
+      return this.$store.state.userData
     }
   },
   components: {
-    EnergyType
+    EnergyType,
+    EvolutionModal
   },
   mixins: [localData, resolveImage],
   mounted () {
     this.getLocalStorageInfo()
   },
   methods: {
+    openEvolutionModal (pokemon) {
+      this.selectedPokemon = pokemon
+      this.showEvolutionModal = true
+    },
     async goHome () {
       this.dialog = false
       //todo: loader
@@ -196,5 +232,8 @@ button.btn.btn-secondary:hover {
 }
 ::v-deep .b-avatar .b-avatar-img img {
   object-fit: contain !important;
+}
+.mdi-timer-sand:hover {
+  color: #242424 !important;
 }
 </style>

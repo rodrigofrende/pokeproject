@@ -4,6 +4,13 @@
       <Header class="py-2"/>
       <router-view />
     </div>
+    <v-btn
+      v-if="currentRouteName !== 'Team'"
+      class="floating-button"
+      elevation="2"
+      fab
+      href="#"
+    ><img src="@/assets/pokeball.png" height="40px" width="40px" alt="pokeball"></v-btn>
     <notifications width="500px" position="bottom right" group="foo" />
   </div>
 </template>
@@ -12,12 +19,29 @@ import Header from '@/components/Header'
 export default {
   components: {
     Header
+  },
+  computed: {
+    currentRouteName() {
+      console.log(this.$route.name)
+      return this.$route.name;
+    }
   }
 }
 </script>
 
 
 <style lang="scss">
+html {
+  scroll-behavior: smooth;
+}
+.floating-button {
+  position: fixed !important;
+  bottom: 10vh !important;
+  right: 5vw !important;
+}
+.modal-open {
+  padding-right: 0px !important;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

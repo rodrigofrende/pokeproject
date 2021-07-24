@@ -2,10 +2,15 @@
 <b-container class="white-background">
   <b-row v-if="pokemonList.length > 0">
     <!-- <b-col cols="12" md="4" > -->
-        <b-col sm="8" class="pt-3">
+        <b-col sm="4" class="pt-3">
+        </b-col>
+        <b-col sm="4" class="pt-3 ">
+          <v-btn icon class="float-right">
+            <v-icon @click="filterFavs" :class="showFavs ? 'red' : ''">mdi-heart</v-icon>
+          </v-btn>
         </b-col>
         <b-col sm="4" class="pt-3">
-          <b-input-group size="sm" class="mb-2">
+          <b-input-group size="sm" class="mb-2 game-font">
             <b-input-group-prepend is-text>
               <b-icon animation="" icon="search"></b-icon>
             </b-input-group-prepend>
@@ -34,7 +39,7 @@
         </v-col>
     <!-- </b-col> -->
   </b-row>
-
+  
   <b-row class="pt-5 " v-else>
     <b-col cols="12 py-5">
       <span class="game-font">Cargando...</span>
@@ -53,6 +58,7 @@
     },
     mixins: [localData],
     data: () => ({
+      showFavs: false,
       value: 50,
       filteredPokemonList: [],
       isFilterActive: false,
@@ -71,20 +77,45 @@
     computed: {
       pokemonList () {
         return this.$store.state.pokemonDataList
+      },
+      myFavs() {
+        return this.$store.state.myFavs
       }
     },
     watch: {
       filterValue (val) {
         if (val !== '') {
           this.isFilterActive = true
-          this.filteredPokemonList = this.pokemonList.filter(x => x.name.toLowerCase().includes(val.toLowerCase()))
+          this.filteredPokemonList = 
+           this.showFavs ? this.myFavs.filter(x => x.name.toLowerCase().includes(val.toLowerCase())) : 
+           this.pokemonList.filter(x => x.name.toLowerCase().includes(val.toLowerCase()))
         } else {
-          this.isFilterActive = false
-          this.filteredPokemonList = []
+          if (!this.showFavs) {
+            this.isFilterActive = false
+          }
+          this.filteredPokemonList = 
+            this.showFavs ? this.myFavs.filter(x => x.name.toLowerCase().includes(val.toLowerCase())) :
+            []
         }
       }
     },
     methods: {
+      filterFavs () {
+        this.showFavs = !this.showFavs
+        if (this.showFavs) {
+          this.isFilterActive = true
+          const myFavs = this.myFavs
+          var result = this.pokemonList.filter(function (o1) {
+              return myFavs.some(function (o2) {
+                  return o1.id === o2.id // return the ones with equal id
+            })
+          })
+          this.filteredPokemonList = result
+          console.log(this.filteredPokemonList)
+        } else {
+          this.isFilterActive = false
+        }
+      },
       cardType (type) {
         switch (type) {
           case 'fire':
@@ -206,6 +237,13 @@
   background: linear-gradient(0deg, rgba(94,75,94,0.7572071064754027) 0%, rgba(64,56,64,1) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#5e4b5e",endColorstr="#403840",GradientType=1);
 }
-
-
+.mdi-heart.red {
+  color: red !important;
+}
+.mdi-information:hover {
+  color: rgba(0, 0, 0, 0.897) !important;
+}
+.mdi-heart.red:hover {
+  color: rgba(168, 6, 6, 0.39) !important;
+}
 </style>

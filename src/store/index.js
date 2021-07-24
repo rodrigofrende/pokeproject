@@ -11,7 +11,10 @@ const store = new Vuex.Store({
       favoritePokemonList: [],
       loadingData: false,
       myTeam: [],
-      myFavs: []
+      myFavs: [],
+      userData: {
+        points: 0
+      }
     },
     mutations: {
       setLoadingData (state, status) {
@@ -30,7 +33,7 @@ const store = new Vuex.Store({
           totalExp: payload.base_experience
         }
         state.myFavs.push(dto)
-        localStorage.setItem("myFavs", JSON.stringify(state.myFavs));
+        localStorage.setItem("myFavs", JSON.stringify(state.myFavs))
       },
       addPokemon (state, payload) {
         const isShiny = Math.random() < 0.15
@@ -59,14 +62,30 @@ const store = new Vuex.Store({
       },
       fillMyFavs (state, payload) {
         state.myFavs = payload
+      },
+      fillUserData (state, payload) {
+        state.userData.points = payload.points
+      },
+      createNewUserData (state) {
+        state.userData.points = 50
+        const dto = {
+          points: state.userData.points
+        }
+        localStorage.setItem("userData", JSON.stringify(dto))
       }
     },
     actions: {
       setPokemonTeam ({ commit }, team) {
         commit('fillMyTeam', team)
       },
+      createUserData ({ commit }) {
+        commit('createNewUserData')
+      },
       setPokemonFavs ({ commit }, favs) {
         commit('fillMyFavs', favs)
+      },
+      setUserData ({ commit }, userData) {
+        commit('fillUserData', userData)
       },
       async getListOfPokemons ({ commit }) {
         commit('setLoadingData', true)
