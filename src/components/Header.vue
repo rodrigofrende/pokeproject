@@ -1,5 +1,5 @@
 <template>
-  <b-container class="px-0 rounded-header" >
+  <!-- <b-container class="px-0 rounded-header" >
     <b-nav align="center" class="game-font">
       <b-nav-item to="/" v-b-tooltip="{
           title: 'Inicio',
@@ -10,7 +10,31 @@
       <b-nav-item class="px-2" to="/MyTeam" >Mi Equipo</b-nav-item>
       <b-nav-item class="px-2" >Acerca de</b-nav-item>
     </b-nav>
-  </b-container>
+  </b-container> -->
+  <div>
+    <b-navbar class="pokemon-nav py-0" toggleable="lg">
+      <b-navbar-brand class="" href="#">
+        <img src="@/assets/pokeball.png" height="40px" width="40px" alt="pokeball">
+      </b-navbar-brand>
+
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item @click="gotoHome" href="#">Inicio</b-nav-item>
+          <b-nav-item class="px-2" to="/MyTeam" >Mi Equipo</b-nav-item>
+          <b-nav-item class="px-2" v-b-tooltip="{
+            title: 'En desarrollo!',
+            placement: 'right',
+          }" disabled>Estadisticas</b-nav-item>
+          <b-nav-item class="px-2" v-b-tooltip="{
+            title: 'En desarrollo!',
+            placement: 'right',
+          }" disabled>Acerca de</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
+  </div>
 </template>
 
 <script>
@@ -19,56 +43,33 @@ export default {
     currentRouteName() {
       return this.$route.name;
     }
+  },
+  methods: {
+    gotoHome() {
+      this.$router.push('/')
+    }
   }
 }
 </script>
 
 <style scoped>
-li.align-right >>> .nav-link {
-  margin-left: auto !important;
-}
-.no-padding >>> .nav-link {
-  display: block;
-  padding: 0px !important;
-}
-a.nav-link {
-  color: white;
-  font-size: 0.9rem !important;
-}
-.router-link-active {
-  color: white;
-  text-decoration-line: underline;
-}
-a.nav-link:hover {
-  color: white;
-  text-decoration-line: underline;
-  transition: 2s;
-}
-.nav {
-  left: 0px;
-  height: 40px;
+.pokemon-nav {
   background-color: #2C64B4;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  border-radius: 4rem;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  margin: 0 20px;
 }
-.nav ul {
-  margin: 0;
-  padding: 0;
+.pokemon-nav >>> a.nav-link {
+  color: white;
+  font-family: 'Press Start 2P';
+  font-size: 0.7rem;
 }
-.nav ul li {
-  margin: 0;
-  padding: 0;
-  float:left;
+.pokemon-nav >>> a.nav-link.active {
+  text-decoration: underline;
 }
-.nav ul li a {
-  text-decoration: none;
-  padding: 10px 20px;
-  display: inline-block !important;
-  color: #FFF;
-  text-align: center;
-  margin: 0;
+.pokemon-nav >>> a.navbar-brand {
+  font-family: 'Press Start 2P';
+  font-size: 0.7rem;
+  cursor: auto;
 }
-
 </style>

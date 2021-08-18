@@ -2,14 +2,14 @@
 <b-container class="white-background">
   <b-row v-if="pokemonList.length > 0">
     <!-- <b-col cols="12" md="4" > -->
-        <b-col sm="4" class="pt-3">
+        <b-col cols="2" md="6" class="">
         </b-col>
-        <b-col sm="4" class="pt-3 ">
+        <b-col cols="2" class="pt-3 ">
           <v-btn icon class="float-right">
             <v-icon @click="filterFavs" :class="showFavs ? 'red' : ''">mdi-heart</v-icon>
           </v-btn>
         </b-col>
-        <b-col sm="4" class="pt-3">
+        <b-col cols="8" md="4" class="pt-3">
           <b-input-group size="sm" class="mb-2 game-font">
             <b-input-group-prepend is-text>
               <b-icon animation="" icon="search"></b-icon>

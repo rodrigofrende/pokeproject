@@ -16,57 +16,26 @@
           <v-col cols="4" class="px-0">
             <b-avatar class="pokemon-avatar bg-transparent" square size="6rem" :src="pokemon.isShiny ? pokemon.sprites.versions['generation-v']['black-white'].animated.front_shiny : pokemon.sprites.versions['generation-v']['black-white'].animated.front_default" />
           </v-col>
-          <v-col cols="6" class="px-0">
+          <v-col cols="8 my-auto" class="px-0">
             <v-col cols="12" class="my-1 mt-auto py-0">
               <span class="float-left text-capitalize game-font">{{pokemon.name}}</span>
             </v-col>
-            <v-col cols="12 mt-4">
-              <span id="exp-span" class="float-left mt-1 text-capitalize game-font">Exp:</span>
-            </v-col>
             <v-col cols="12 d-flex">
-              <v-progress-linear
-                :value="(pokemon.exp * 100) / pokemon.totalExp"
-                height="25"
-                rounded
-                class="mt-1 py-1"
-              >
-                <strong>{{ pokemon.exp }} / {{pokemon.totalExp}}</strong>
-              </v-progress-linear>
-              <v-btn class="pr-1" icon >
-                <v-icon class="ml-auto" @click="openEvolutionModal(pokemon)"
-                  >mdi-plus-circle</v-icon
-                >
-              </v-btn>
+              <span class="float-left text-capitalize game-font my-auto">Tipo:</span>
+              <EnergyType 
+                class="mx-1"
+                v-for="type in pokemon.types"
+                :key="type.slot"
+                :image="resolveImage(type.type.name)"
+                :type="type.type.name"
+              />
             </v-col>
-          </v-col>
-          <v-col cols="2" class="d-flex px-0">
-            <EnergyType 
-              class="mx-1"
-              v-for="type in pokemon.types"
-              :key="type.slot"
-              :image="resolveImage(type.type.name)"
-              :type="type.type.name"
-            />
           </v-col>
         </v-card>
       </v-col>
     <!-- </b-col> -->
-    <v-col xl="6" lg="6" md="6" sm="12" xs="12" class="my-3 game-font">
-      <span class="ml-3 float-left">Integrantes del Equipo: {{ myTeam.length }} / 6 </span>
-    </v-col>
-    <v-col xl="6" lg="6" md="6" sm="12" xs="12" class="my-3 game-font d-flex">
-      <span class="ml-3 float-left">Puntos restantes: {{ userData.points }} / 50 </span>
-      <v-icon v-b-tooltip="{
-        title: 'Tiempo restante para sumar 10 puntos: 15m',
-        placement: 'bottom',
-        customClass: 'left-0',
-      }"
-      class="ml-3">mdi-timer-sand</v-icon>
-      <v-icon class="ml-3" v-b-tooltip="{
-        title: 'Los puntos sirven para evolucionar a tu equipo, se reponen parcialmente cada 10m',
-        placement: 'bottom',
-        customClass: 'left-0',
-      }" >mdi-information</v-icon>
+    <v-col cols="12" class="my-3 game-font mx-auto">
+      <span class="">Integrantes del Equipo: {{ myTeam.length }} / 6 </span>
     </v-col>
     <b-col cols="12" class="my-3 game-font">
       <b-button  v-b-tooltip="{

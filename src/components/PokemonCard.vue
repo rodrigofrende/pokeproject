@@ -1,5 +1,5 @@
 <template>
-  <b-container v-if="pokemon.id" class="px-0">
+  <b-container v-if="pokemon.id" class="px-0 mw-set">
     <b-row>
       <b-col cols="12" class="text-left">
         <span class="game-font pl-3">{{ pokemon.id }} </span>
@@ -210,6 +210,9 @@ export default {
 </script>
 
 <style scoped>
+.mw-set {
+  max-width: 17rem;
+}
 .font-text {
   font-size: 0.8rem;
 }
