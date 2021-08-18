@@ -76,9 +76,8 @@ html {
 }
 .vue-notification {
   padding: 1.5rem !important;
-  margin: 1rem 20px 20px !important;
- 
-  font-size: 1.3rem !important;
+  margin: 1rem 10px 10px !important;
+  max-width: 80%;
  
   color: #ffffff;
   background: #44A4FC;
