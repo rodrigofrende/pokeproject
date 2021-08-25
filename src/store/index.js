@@ -67,8 +67,9 @@ const store = new Vuex.Store({
       fillMyFavs (state, payload) {
         state.myFavs = payload
       },
-      fillUserData (state, payload) {
-        state.userData.points = payload.points
+      fillUserData (state) {
+        var userData = JSON.parse(localStorage.getItem("userData"))
+        state.userData.name = userData.name
       },
       createNewUserData (state, payload) {
         state.userData.name = payload

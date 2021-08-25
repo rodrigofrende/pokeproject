@@ -79,7 +79,9 @@
         title: 'Enviar los datos de tu equipo ayuda a recolectar información y mostrarla en la sección de Estadísticas.',
         placement: 'bottom',
         customClass: 'left-0',
-      }" @click="sendTeam" >Enviar mi equipo</b-button>
+      }" @click="sendTeam" 
+      :disabled="teamSended"
+      >Enviar mi equipo</b-button>
     </b-col>
   </b-row>
 
@@ -110,7 +112,6 @@
             <p class="game-font">Al agregar un Pokemon a tu equipo tenés 10% de probabilidades de que éste sea SHINY . Podes modificar tu equipo en todo momento, pero recordá que una vez saques al Pokemon todo el progreso que hayas tenido con el se va a perder.</p>
             <p class="game-font">Además tenes la opción de enviar los datos de tu equipo, esto ayuda a que la aplicación crezca y cuenta con la información .</p>
           </v-card-text>
-
           <v-divider></v-divider>
 
           <v-card-actions>
@@ -133,13 +134,17 @@
 
 <script>
 import EnergyType from '@/components/EnergyType'
+// mixins
 import localData from '@/mixins/localData'
 import resolveImage from '@/mixins/resolveImage'
 import confirmation from '@/mixins/confirmation'
+// services
+import { getSubmittedTeams, postMyTeam } from '@/services/Firebase/firebase'
 export default {
   name: 'Team',
   data () {
     return {
+      teamSended: false,
       dialog: false,
       exp: 55,
       totalExp: 0,
@@ -161,8 +166,8 @@ export default {
     EnergyType
   },
   mixins: [localData, resolveImage, confirmation],
-  mounted () {
-    this.getLocalStorageInfo()
+  async mounted () {
+    await this.getLocalStorageInfo()
   },
   methods: {
     removeFav(pokemon) {
@@ -236,17 +241,33 @@ export default {
       //todo: loader
       await this.$router.push('/')
     },
-    sendTeam () {
+    async sendTeam () {
       const team = this.myTeam
-      if (team.length === 6) {
-        // do  sarasa
-      } else {
+      if (team.length === 6 && !this.teamSended) {
+        this.teamSended = true
+        await postMyTeam(team)
         return this.$notify({
           group: 'foo',
-          type: 'error',
-          title: 'Error',
-          text: 'Tu equipo tiene que estar completo.'
+          type: 'success',
+          title: 'Exito!',
+          text: 'Tu equipo fue enviado'
         })
+      } else {
+        if (this.teamSended) {
+          return this.$notify({
+            group: 'foo',
+            type: 'error',
+            title: 'Error',
+            text: 'Tu equipo ya fue enviado'
+          })
+        } else {
+          return this.$notify({
+            group: 'foo',
+            type: 'error',
+            title: 'Error',
+            text: 'Tu equipo tiene que estar completo.'
+          })
+        }
       }
     }
   }

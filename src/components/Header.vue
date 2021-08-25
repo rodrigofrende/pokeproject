@@ -23,10 +23,7 @@
         <b-navbar-nav>
           <b-nav-item @click="gotoHome" href="#">Inicio</b-nav-item>
           <b-nav-item class="px-2" to="/MyTeam" >Mi Equipo</b-nav-item>
-          <b-nav-item class="px-2" v-b-tooltip="{
-            title: 'En desarrollo!',
-            placement: 'right',
-          }" disabled>Estadisticas</b-nav-item>
+          <b-nav-item class="px-2" to="/Stats">Estadisticas</b-nav-item>
           <b-nav-item class="px-2" v-b-tooltip="{
             title: 'En desarrollo!',
             placement: 'right',
