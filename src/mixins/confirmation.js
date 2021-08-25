@@ -29,7 +29,7 @@ const mixin = {
           cancelVariant: 'col order-1',
           cancelTitle: msg.cancelTitle || 'Cancelar',
           footerClass: 'row py-3 justify-content-between',
-          modalClass: 'game-font text-capitalize',
+          modalClass: 'game-font',
           bodyClass: 'text-center'
         })
   

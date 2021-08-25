@@ -7,16 +7,15 @@
         xl="6"
         lg="6"
         md="6"
-        sm="12"
-        xs="12"
+        sm="10 mx-auto"
         v-for="pokemon in myTeam"
         :key="pokemon.id"
       >
-        <v-card class="d-flex">
+        <v-card class="d-flex pokemon-card mx-1">
           <v-col cols="4" class="px-0">
             <b-avatar class="pokemon-avatar bg-transparent" square size="6rem" :src="pokemon.isShiny ? pokemon.sprites.versions['generation-v']['black-white'].animated.front_shiny : pokemon.sprites.versions['generation-v']['black-white'].animated.front_default" />
           </v-col>
-          <v-col cols="8 my-auto" class="px-0">
+          <v-col cols="6 my-auto" class="px-0">
             <v-col cols="12" class="my-1 mt-auto py-0">
               <span class="float-left text-capitalize game-font">{{pokemon.name}}</span>
             </v-col>
@@ -25,11 +24,49 @@
               <EnergyType 
                 class="mx-1"
                 v-for="type in pokemon.types"
+                size="1.5rem"
                 :key="type.slot"
                 :image="resolveImage(type.type.name)"
                 :type="type.type.name"
               />
             </v-col>
+          </v-col>
+          <v-col cols="2" class="">
+            <v-btn icon class="mx-auto my-auto" >
+              <v-icon :class="isFaved(pokemon.id) ? 'red' : ''" v-b-tooltip="{
+                title: 'Favorito',
+                placement: 'left',
+                customClass: 'left-0',
+              }"
+              @click="removeFav(pokemon)"
+              >mdi-heart</v-icon>
+            </v-btn>
+            <v-btn icon class="mx-auto my-auto">
+              <v-icon class="mx-auto my-auto" v-b-tooltip="{
+                title: 'Remover',
+                placement: 'left',
+                customClass: 'left-0',
+              }"
+              @click="remove(pokemon)"
+                >mdi-minus-circle</v-icon
+              >
+            </v-btn>
+            <div>
+              <v-icon v-if="pokemon.isShiny" v-b-tooltip="{
+                title: 'Felicidades! es Shiny',
+                placement: 'left',
+                customClass: 'left-0',
+              }" class="mx-auto my-auto shiny"
+                >mdi-alpha-s-circle</v-icon
+              >
+              <v-icon v-else class="mx-auto my-auto" v-b-tooltip="{
+                title: 'Not Shiny :(',
+                placement: 'left',
+                customClass: 'left-0',
+              }"
+                >mdi-alpha-s-circle</v-icon
+              >
+            </div>
           </v-col>
         </v-card>
       </v-col>
@@ -91,11 +128,6 @@
       </v-dialog>
     </b-col>
   </b-row>
-  <EvolutionModal 
-    :show="showEvolutionModal"
-    @closeModal="showEvolutionModal = false"
-    :pokemon="selectedPokemon"
-  />
 </b-container>
 </template>
 
@@ -103,12 +135,11 @@
 import EnergyType from '@/components/EnergyType'
 import localData from '@/mixins/localData'
 import resolveImage from '@/mixins/resolveImage'
-import EvolutionModal from '@/components/EvolutionModal'
+import confirmation from '@/mixins/confirmation'
 export default {
   name: 'Team',
   data () {
     return {
-      showEvolutionModal: false,
       dialog: false,
       exp: 55,
       totalExp: 0,
@@ -121,20 +152,84 @@ export default {
     },
     userData () {
       return this.$store.state.userData
-    }
+    },
+    myFavs() {
+      return this.$store.state.myFavs;
+    },
   },
   components: {
-    EnergyType,
-    EvolutionModal
+    EnergyType
   },
-  mixins: [localData, resolveImage],
+  mixins: [localData, resolveImage, confirmation],
   mounted () {
     this.getLocalStorageInfo()
   },
   methods: {
-    openEvolutionModal (pokemon) {
-      this.selectedPokemon = pokemon
-      this.showEvolutionModal = true
+    removeFav(pokemon) {
+      var index = this.myFavs
+        .map((x) => {
+          return x.id;
+        })
+        .indexOf(pokemon.id);
+      debugger
+      if (index > 0) {
+        this.myFavs.splice(index, 1);
+        this.$store.dispatch('removeOfMyFavs', pokemon)
+        return this.$notify({
+          group: "foo",
+          type: "info",
+          title: "Info",
+          text:
+            pokemon.name.charAt(0).toUpperCase() +
+            pokemon.name.slice(1) +
+            " fue removido de tus favoritos.",
+        });
+      } else {
+        this.$store.dispatch('addToMyFavs', pokemon)
+        return this.$notify({
+          group: "foo",
+          type: "success",
+          title: "Éxito !",
+          text:
+            pokemon.name.charAt(0).toUpperCase() +
+            pokemon.name.slice(1) +
+            " fue agregado de tus favoritos.",
+        });
+      }
+    },
+    isFaved(id) {
+      const isAdded = this.myFavs.find((x) => x.id === id);
+      return isAdded;
+    },
+    async remove (pokemon) {
+        const body = ({
+          text: `${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)} va a ser removido de tu equipo`,
+          cancelTitle: 'Cancelar',
+          okTitle: 'Confirmar'
+        })
+        const confirm = await this.showConfirmationBox(body)
+
+        if (confirm) {
+          var index = this.myTeam
+          .map((x) => {
+            return x.id;
+          })
+          .indexOf(pokemon.id);
+
+          this.myTeam.splice(index, 1)
+          this.$store.dispatch('removeOfMyTeam', pokemon)
+          return this.$notify({
+            group: "foo",
+            type: "info",
+            title: "Info",
+            text:
+              pokemon.name.charAt(0).toUpperCase() +
+              pokemon.name.slice(1) +
+              " fue removido de tu equipo.",
+          })
+        } else {
+          return
+        }
     },
     async goHome () {
       this.dialog = false
@@ -159,6 +254,14 @@ export default {
 </script>
 
 <style scoped>
+::v-deep .btn.btn-col.order-2:hover {
+  order: 1;
+  background-color: #2C64B4;
+}
+::v-deep .btn.btn-col.order-1:hover {
+  order: 1;
+  background-color: rgba(189, 22, 22, 0.842);
+}
 .text-black {
   color: #242424;
   font-size: 1rem;
@@ -192,17 +295,27 @@ button.btn.btn-secondary:hover {
   color: #242424 !important;
   opacity: 0.99;
 }
-::v-deep .pokemon-avatar.b-avatar-img {
-  padding: 0.6rem !important;
-  margin: 0rem !important;
-  width: 100% ;
-  height: 100%;
-  object-fit: contain !important;
-}
 ::v-deep .b-avatar .b-avatar-img img {
   object-fit: contain !important;
 }
 .mdi-timer-sand:hover {
   color: #242424 !important;
+}
+.mdi-heart.red {
+  color: red !important;
+}
+.mdi-minus-circle:hover {
+  color: rgb(189, 18, 18) !important;
+  opacity: 0.8;
+}
+.mdi-heart:hover {
+  color: rgb(189, 18, 18) !important;
+  opacity: 0.8;
+}
+.mdi-alpha-s-circle.shiny {
+  color: darkgoldenrod;
+}
+.pokemon-card:hover {
+  box-shadow: 1px 1px 3px 1.5px rgb(81, 84, 92) !important;
 }
 </style>

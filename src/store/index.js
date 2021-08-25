@@ -12,11 +12,15 @@ const store = new Vuex.Store({
       loadingData: false,
       myTeam: [],
       myFavs: [],
+      isNewUser: false,
       userData: {
-        points: 0
+        name: 0
       }
     },
     mutations: {
+      isNewUser (state) {
+        state.isNewUser = true
+      },
       setLoadingData (state, status) {
         state.loadingData = status
       },
@@ -66,12 +70,35 @@ const store = new Vuex.Store({
       fillUserData (state, payload) {
         state.userData.points = payload.points
       },
-      createNewUserData (state) {
-        state.userData.points = 50
+      createNewUserData (state, payload) {
+        state.userData.name = payload
         const dto = {
-          points: state.userData.points
+          userName: state.userData.name
         }
         localStorage.setItem("userData", JSON.stringify(dto))
+      },
+      removeFavPokemon (state, pokemon) {
+        var favs = JSON.parse(localStorage.getItem("myFavs"))
+        var index = favs
+          .map((x) => {
+            return x.id;
+          })
+          .indexOf(pokemon.id);
+
+          favs.splice(index, 1)
+          localStorage.setItem("myFavs", JSON.stringify(favs));
+      },
+      removePokemon (state, pokemon) {
+        var team = JSON.parse(localStorage.getItem("myTeam"))
+
+        var index = team
+          .map((x) => {
+            return x.id;
+          })
+          .indexOf(pokemon.id);
+
+          team.splice(index, 1)
+          localStorage.setItem("myTeam", JSON.stringify(team));
       }
     },
     actions: {
@@ -79,7 +106,10 @@ const store = new Vuex.Store({
         commit('fillMyTeam', team)
       },
       createUserData ({ commit }) {
-        commit('createNewUserData')
+        commit('isNewUser')
+      },
+      setNewUserName ({ commit }, name) {
+        commit('createNewUserData', name)
       },
       setPokemonFavs ({ commit }, favs) {
         commit('fillMyFavs', favs)
@@ -125,6 +155,12 @@ const store = new Vuex.Store({
       },
       addToMyTeam ({ commit }, pokemon) {
         commit('addPokemon', pokemon)
+      },
+      removeOfMyTeam ({ commit }, pokemon) {
+        commit('removePokemon', pokemon)
+      },
+      removeOfMyFavs ({ commit }, pokemon) {
+        commit('removeFavPokemon', pokemon)
       },
       addToMyFavs ({ commit }, pokemon) {
         commit('addFav', pokemon)

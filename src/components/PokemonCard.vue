@@ -104,7 +104,7 @@ export default {
     },
     async remove (pokemon) {
         const body = ({
-          text: `${pokemon.name} va a ser removido de tu equipo y todo el progreso se perderá.`,
+          text: `${pokemon.name} va a ser removido de tu equipo`,
           cancelTitle: 'Cancelar',
           okTitle: 'Confirmar'
         })
@@ -118,6 +118,7 @@ export default {
           .indexOf(pokemon.id);
 
           this.myTeam.splice(index, 1)
+          this.$store.dispatch('removeOfMyTeam', pokemon)
           return this.$notify({
             group: "foo",
             type: "info",

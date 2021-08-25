@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-avatar 
-      size="2rem"
+      :size="size"
       :src="require('@/assets/' + image + '')"
       v-b-tooltip="{
         title: type.charAt(0).toUpperCase() + type.slice(1),
@@ -24,6 +24,10 @@ export default {
     type: {
       type: String,
       default: ''
+    },
+    size: {
+      type: String,
+      default: '2rem'
     }
   }
 }

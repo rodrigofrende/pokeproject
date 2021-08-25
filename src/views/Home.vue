@@ -45,19 +45,24 @@
       <span class="game-font">Cargando...</span>
     </b-col>
   </b-row>
+
+  <NewUserModal @close="showNewUserModal = false" :show="showNewUserModal" />
 </b-container>
 </template>
 
 <script>
+  import NewUserModal from '@/components/NewUserModal'
   import PokemonCard from '@/components/PokemonCard'
   import localData from '@/mixins/localData'
   export default {
     name: 'Home',
     components: {
       PokemonCard,
+      NewUserModal
     },
     mixins: [localData],
     data: () => ({
+      showNewUserModal: false,
       showFavs: false,
       value: 50,
       filteredPokemonList: [],
@@ -75,6 +80,9 @@
       this.getLocalStorageInfo()
     },
     computed: {
+      isNewUser () {
+        return this.$store.state.isNewUser
+      },
       pokemonList () {
         return this.$store.state.pokemonDataList
       },
@@ -83,6 +91,11 @@
       }
     },
     watch: {
+      isNewUser (val) {
+        if (val === true) {
+          this.showNewUserModal = true
+        }
+      },
       filterValue (val) {
         if (val !== '') {
           this.isFilterActive = true
