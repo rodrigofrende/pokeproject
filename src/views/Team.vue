@@ -176,7 +176,6 @@ export default {
           return x.id;
         })
         .indexOf(pokemon.id);
-      debugger
       if (index > 0) {
         this.myFavs.splice(index, 1);
         this.$store.dispatch('removeOfMyFavs', pokemon)

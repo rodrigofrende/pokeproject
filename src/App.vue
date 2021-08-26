@@ -22,7 +22,6 @@ export default {
   },
   computed: {
     currentRouteName() {
-      console.log(this.$route.name)
       return this.$route.name;
     }
   }

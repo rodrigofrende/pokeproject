@@ -42,7 +42,6 @@ export default {
   },
   async mounted () {
     this.submittedNames = await getSubmittedNames()
-    console.log(this.submittedNames)
   },
   methods: {
     close () {

@@ -18,9 +18,7 @@ const db = getFirestore();
 
 export const getSubmittedTeams = async (url) => {
   const querySnapshot = await getDocs(collection(db, "teams"));
-  // querySnapshot.forEach((doc) => {
-  //   console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
-  // });
+
   let returnData = []
   querySnapshot.forEach( item => {
     returnData.push(item.data())
@@ -30,9 +28,7 @@ export const getSubmittedTeams = async (url) => {
 
 export const getSubmittedNames = async (url) => {
   const querySnapshot = await getDocs(collection(db, "users"));
-  // querySnapshot.forEach((doc) => {
-  //   console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
-  // });
+
   let returnData = []
   querySnapshot.forEach( item => {
     returnData.push(item.data())
@@ -55,7 +51,6 @@ export const postMyTeam = async (team) => {
 }
 
 export const postNewUser = async (name) => {
-  debugger
   const data = await addDoc(collection(db, "users"), {
     name: name
   })

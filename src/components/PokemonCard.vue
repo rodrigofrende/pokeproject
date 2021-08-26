@@ -200,7 +200,6 @@ export default {
       });
     },
     showPokemonModal(pokemon) {
-      console.log(pokemon);
       this.showModal = true;
     },
     closeModal() {

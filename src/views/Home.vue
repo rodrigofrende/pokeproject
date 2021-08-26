@@ -124,7 +124,6 @@
             })
           })
           this.filteredPokemonList = result
-          console.log(this.filteredPokemonList)
         } else {
           this.isFilterActive = false
         }

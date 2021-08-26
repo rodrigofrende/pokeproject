@@ -59,7 +59,6 @@ const store = new Vuex.Store({
       async setPokemonList (state, payload) {
         payload.sort((a, b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
         state.pokemonDataList = payload
-        console.log('Pokemon list', state.pokemonDataList)
       },
       fillMyTeam (state, payload) {
         state.myTeam = payload
