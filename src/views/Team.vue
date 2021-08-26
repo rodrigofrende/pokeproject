@@ -80,14 +80,15 @@
         placement: 'bottom',
         customClass: 'left-0',
       }" @click="sendTeam" 
-      :disabled="teamSended"
+      :disabled="teamSended || teamSendedCount === 3"
       >Enviar mi equipo</b-button>
+      <span class=""> {{ teamSendedCount }} / 3 </span>
     </b-col>
   </b-row>
 
   <b-row class="pt-5 " v-else>
     <b-col cols="12 pt-5">
-      <span class="btn-pokemon game-font">Tu equipo está vacio.</span>
+      <span class="game-font">Tu equipo está vacio.</span>
     </b-col>
     <b-col cols="12 py-2">
       <v-dialog
@@ -109,8 +110,8 @@
             Crea tu Equipo
           </v-card-title>
           <v-card-text class="px-5 py-0">
-            <p class="game-font">Al agregar un Pokemon a tu equipo tenés 10% de probabilidades de que éste sea SHINY . Podes modificar tu equipo en todo momento, pero recordá que una vez saques al Pokemon todo el progreso que hayas tenido con el se va a perder.</p>
-            <p class="game-font">Además tenes la opción de enviar los datos de tu equipo, esto ayuda a que la aplicación crezca y cuenta con la información .</p>
+            <p class="game-font">Al agregar un Pokemon a tu equipo tenés 10% de probabilidades de que éste sea SHINY . Podes modificar tu equipo en todo momento, pero recordá que solo podes enviarlo 3 veces.</p>
+            <p class="game-font">Enviar los datos de tu equipo ayuda a que la aplicación crezca y cuente con más datos para calcular y mostrar en la sección de Estadísticas .</p>
           </v-card-text>
           <v-divider></v-divider>
 
@@ -148,7 +149,8 @@ export default {
       dialog: false,
       exp: 55,
       totalExp: 0,
-      selectedPokemon: null
+      selectedPokemon: null,
+      teamSendedCount: null
     }
   },
   computed: {
@@ -168,6 +170,8 @@ export default {
   mixins: [localData, resolveImage, confirmation],
   async mounted () {
     await this.getLocalStorageInfo()
+    var userData = JSON.parse(localStorage.getItem("userData"))
+    this.teamSendedCount = userData.teamSendedCount
   },
   methods: {
     removeFav(pokemon) {
@@ -243,7 +247,13 @@ export default {
     async sendTeam () {
       const team = this.myTeam
       if (team.length === 6 && !this.teamSended) {
+
         this.teamSended = true
+        var userData = JSON.parse(localStorage.getItem("userData"))
+        userData.teamSendedCount = userData.teamSendedCount + 1
+        localStorage.setItem("userData", JSON.stringify(userData))
+        this.teamSendedCount = JSON.parse(localStorage.getItem("userData")).teamSendedCount
+
         await postMyTeam(team)
         return this.$notify({
           group: 'foo',

@@ -13,25 +13,45 @@
             <v-spacer></v-spacer>
 
             <v-btn icon v-if="!allreadyFaved(pokemon.id)">
-              <v-icon @click="addToMyFavs(pokemon)">mdi-heart</v-icon>
+              <v-icon v-b-tooltip="{
+                title: 'Favorito',
+                placement: 'left',
+                customClass: 'left-0',
+              }" @click="addToMyFavs(pokemon)">mdi-heart</v-icon>
             </v-btn>
             <v-btn icon v-else>
-              <v-icon @click="removeFav(pokemon)" class="red">mdi-heart</v-icon>
+              <v-icon v-b-tooltip="{
+                title: 'Favorito',
+                placement: 'left',
+                customClass: 'left-0',
+              }"  @click="removeFav(pokemon)" class="red">mdi-heart</v-icon>
             </v-btn>
 
             <v-btn icon v-if="!allreadyAdded(pokemon.id)">
-              <v-icon class="white" @click="addToMyTeam(pokemon)"
+              <v-icon class="white" @click="addToMyTeam(pokemon)" v-b-tooltip="{
+                title: 'Agregar al equipo',
+                placement: 'left',
+                customClass: 'left-0',
+              }" 
                 >mdi-plus-circle</v-icon
               >
             </v-btn>
             <v-btn icon v-else>
-              <v-icon class="white" @click="remove(pokemon)"
+              <v-icon class="white" @click="remove(pokemon)" v-b-tooltip="{
+                title: 'Quitar del equipo',
+                placement: 'left',
+                customClass: 'left-0',
+              }" 
                 >mdi-minus-circle</v-icon
               >
             </v-btn>
 
             <v-btn icon>
-              <v-icon @click="showPokemonModal(pokemon)"
+              <v-icon @click="showPokemonModal(pokemon)" v-b-tooltip="{
+                title: 'Info',
+                placement: 'left',
+                customClass: 'left-0',
+              }" 
                 >mdi-information</v-icon
               >
             </v-btn>

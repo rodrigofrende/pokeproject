@@ -73,7 +73,8 @@ const store = new Vuex.Store({
       createNewUserData (state, payload) {
         state.userData.name = payload
         const dto = {
-          userName: state.userData.name
+          userName: state.userData.name,
+          teamSendedCount: 0
         }
         localStorage.setItem("userData", JSON.stringify(dto))
       },
