@@ -28,8 +28,19 @@ export const getSubmittedTeams = async (url) => {
   return returnData
 }
 
+export const getSubmittedNames = async (url) => {
+  const querySnapshot = await getDocs(collection(db, "users"));
+  // querySnapshot.forEach((doc) => {
+  //   console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+  // });
+  let returnData = []
+  querySnapshot.forEach( item => {
+    returnData.push(item.data())
+  });
+  return returnData
+}
+
 export const postMyTeam = async (team) => {
-  debugger
   const user = JSON.parse(localStorage.getItem("userData"))
   for (const pokemon of team) {
     const contents = await addDoc(collection(db, "teams"), {
@@ -41,4 +52,12 @@ export const postMyTeam = async (team) => {
     })
   }
   return team
+}
+
+export const postNewUser = async (name) => {
+  debugger
+  const data = await addDoc(collection(db, "users"), {
+    name: name
+  })
+  return data
 }

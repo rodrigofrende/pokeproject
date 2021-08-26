@@ -139,7 +139,7 @@ import localData from '@/mixins/localData'
 import resolveImage from '@/mixins/resolveImage'
 import confirmation from '@/mixins/confirmation'
 // services
-import { getSubmittedTeams, postMyTeam } from '@/services/Firebase/firebase'
+import { postMyTeam } from '@/services/Firebase/firebase'
 export default {
   name: 'Team',
   data () {
@@ -311,7 +311,7 @@ button.btn.btn-secondary {
   background-color: #2C64B4 !important;
   color: white !important;
 }
-button.btn.btn-secondary:hover {
+button.btn.btn-secondary:hover:not(.disabled) {
   background-color: #2C64B4 !important;
   color: #242424 !important;
   opacity: 0.99;

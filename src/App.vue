@@ -11,7 +11,7 @@
       fab
       href="#"
     ><img src="@/assets/pokeball.png" height="40px" width="40px" alt="pokeball"></v-btn>
-    <notifications width="500px" position="bottom right" group="foo" />
+    <notifications width="500px" :closeOnClick="true" position="bottom right" group="foo" />
   </div>
 </template>
 <script>
@@ -38,6 +38,7 @@ html {
   position: fixed !important;
   bottom: 10vh !important;
   right: 5vw !important;
+  z-index: 1 !important;
 }
 .modal-open {
   padding-right: 0px !important;

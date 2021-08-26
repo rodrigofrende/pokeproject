@@ -26,10 +26,12 @@
 </template>
 
 <script>
+import { getSubmittedNames, postNewUser } from '@/services/Firebase/firebase'
 export default {
   data () {
     return {
-      userName: ''
+      userName: '',
+      submittedNames: []
     }
   },
   props: {
@@ -38,13 +40,40 @@ export default {
       default: false
     }
   },
+  async mounted () {
+    this.submittedNames = await getSubmittedNames()
+    console.log(this.submittedNames)
+  },
   methods: {
     close () {
       this.$emit('close')
     },
-    saveName () {
-      this.$store.dispatch('setNewUserName', this.userName)
-      this.close()
+    async saveName () {
+      var validName = true
+      this.submittedNames.forEach(item => {
+        if (item.name.toLowerCase() === this.userName.toLowerCase()) {
+          validName = false
+        }
+      });
+      if (!validName) {
+        return this.$notify({
+          group: "foo",
+          type: "error",
+          title: "Error",
+          text:
+            this.userName +
+            " ya se encuentra en uso. Elegí otro nombre",
+        });
+      } else {
+        this.$store.dispatch('setNewUserName', this.userName)
+        await postNewUser(this.userName)
+        this.close()
+        return this.$notify({
+          group: "foo",
+          type: "info",
+          title: "Bienvenido " + this.userName + " !",
+        });
+      }
     }
   }
 };
