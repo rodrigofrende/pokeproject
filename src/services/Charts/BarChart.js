@@ -51,9 +51,11 @@ export default {
           }
       });
       counts.forEach(element => {
-        this.chartInfo.labels = this.chartInfo.labels.concat(element.name)
-        this.chartInfo.datasets[0].data.push(element.count)
-        this.chartInfo.datasets[0].backgroundColor.push(this.randomColor())
+        if (element.count > 1) {
+          this.chartInfo.labels = this.chartInfo.labels.concat(element.name)
+          this.chartInfo.datasets[0].data.push(element.count)
+          this.chartInfo.datasets[0].backgroundColor.push(this.randomColor())
+        }
       });
     }
   },

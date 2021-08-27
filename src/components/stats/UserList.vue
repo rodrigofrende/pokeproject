@@ -29,9 +29,22 @@ export default {
   border: 1px solid darkslategrey;
   border-radius: 1rem;
   padding: 6px 10px;
+  flex-grow: initial;
+  flex-shrink: initial;
 }
 .wall-name:hover {
   transition-duration: 0.2s;
   font-size: 0.9rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .wall-name {
+    font-size: 0.6rem;
+    margin-left: 0.5rem !important;
+    margin-right: 0.5rem !important;
+  }
+  .wall-name:hover {
+    font-size: 0.75rem;
+  }
 }
 </style>

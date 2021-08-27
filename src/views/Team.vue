@@ -16,10 +16,10 @@
             <b-avatar class="pokemon-avatar bg-transparent" square size="6rem" :src="pokemon.isShiny ? pokemon.sprites.versions['generation-v']['black-white'].animated.front_shiny : pokemon.sprites.versions['generation-v']['black-white'].animated.front_default" />
           </v-col>
           <v-col cols="6 my-auto" class="px-0">
-            <v-col cols="12" class="my-1 mt-auto py-0">
+            <v-col cols="12" xs="6" class="my-1 mt-auto py-0">
               <span class="float-left text-capitalize game-font">{{pokemon.name}}</span>
             </v-col>
-            <v-col cols="12 d-flex">
+            <v-col cols="12 d-flex" xs="6">
               <span class="float-left text-capitalize game-font my-auto">Tipo:</span>
               <EnergyType 
                 class="mx-1"
@@ -51,7 +51,7 @@
                 >mdi-minus-circle</v-icon
               >
             </v-btn>
-            <div>
+            <div class="">
               <v-icon v-if="pokemon.isShiny" v-b-tooltip="{
                 title: 'Felicidades! es Shiny',
                 placement: 'left',
@@ -74,7 +74,7 @@
     <v-col cols="12" class="my-3 game-font mx-auto">
       <span class="">Integrantes del Equipo: {{ myTeam.length }} / 6 </span>
     </v-col>
-    <b-col cols="12" class="my-3 game-font">
+    <b-col cols="12" class="my-3 mx-auto game-font">
       <b-button  v-b-tooltip="{
         title: 'Enviar los datos de tu equipo ayuda a recolectar información y mostrarla en la sección de Estadísticas.',
         placement: 'bottom',
@@ -347,5 +347,10 @@ button.btn.btn-secondary:hover:not(.disabled) {
 }
 .pokemon-card:hover {
   box-shadow: 1px 1px 3px 1.5px rgb(81, 84, 92) !important;
+}
+@media only screen and (max-width: 600px) {
+  span {
+    font-size: 0.8rem;
+  }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <b-container>
-  <h5 class="game-font">Pokemons Shiny</h5>
+  <h5 class="game-font">Cantidad de Pokemons Shiny</h5>
   <div class="small">
     <PieChart :data="submittedNames"/>
   </div>
