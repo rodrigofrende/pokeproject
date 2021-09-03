@@ -11,7 +11,7 @@
       fab
       href="#"
     ><img src="@/assets/pokeball.png" height="40px" width="40px" alt="pokeball"></v-btn>
-    <notifications width="500px" :closeOnClick="true" position="bottom right" group="foo" />
+    <notifications v-if="!isMobile" width="500px" :closeOnClick="true" position="bottom right" group="foo" />
   </div>
 </template>
 <script>
@@ -20,9 +20,18 @@ export default {
   components: {
     Header
   },
+  data() { return { windowWidth: window.innerWidth } },
+  mounted() {
+    window.addEventListener('resize', () => {
+      this.windowWidth = window.innerWidth
+    })
+  },
   computed: {
     currentRouteName() {
       return this.$route.name;
+    },
+    isMobile() {
+      return this.windowWidth <= 768
     }
   }
 }

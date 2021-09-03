@@ -110,8 +110,9 @@
             Crea tu Equipo
           </v-card-title>
           <v-card-text class="px-5 py-0">
+            <p class="game-font">Tu equipo debe tener 6 integrantes, los podes agregar desde el boton + en la tarjeta de cada Pokemon.</p>
             <p class="game-font">Al agregar un Pokemon a tu equipo tenés 10% de probabilidades de que éste sea SHINY . Podes modificar tu equipo en todo momento, pero recordá que solo podes enviarlo 3 veces.</p>
-            <p class="game-font">Enviar los datos de tu equipo ayuda a que la aplicación crezca y cuente con más datos para calcular y mostrar en la sección de Estadísticas .</p>
+            <p class="game-font">Enviar los datos de tu equipo ayuda a que la aplicación crezca y cuente con más datos para mostrar en la sección de Estadísticas .</p>
           </v-card-text>
           <v-divider></v-divider>
 

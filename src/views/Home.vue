@@ -1,6 +1,6 @@
 <template>
 <b-container class="white-background">
-  <b-row v-if="pokemonList.length > 0">
+  <b-row v-if="pokemonList.length > 0" data-app>
     <!-- <b-col cols="12" md="4" > -->
         <b-col cols="2" md="6" class="">
         </b-col>
@@ -37,6 +37,35 @@
             </v-card-actions>
           </v-card>
         </v-col>
+
+      <v-dialog
+        v-model="dialog"
+        width="500"
+      >
+        <v-card>
+          <v-card-title class="game-font">
+            Crea tu Equipo
+          </v-card-title>
+          <v-card-text class="px-5 py-0">
+            <p class="game-font">Tu equipo debe tener 6 integrantes, los podes agregar desde el boton + en la tarjeta de cada Pokemon.</p>
+            <p class="game-font">Al agregar un Pokemon a tu equipo tenés 10% de probabilidades de que éste sea SHINY . Podes modificar tu equipo en todo momento, pero recordá que solo podes enviarlo 3 veces.</p>
+            <p class="game-font">Enviar los datos de tu equipo ayuda a que la aplicación crezca y cuente con más datos para mostrar en la sección de Estadísticas .</p>
+          </v-card-text>
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              text
+              class="game-font"
+              @click="closeDialog"
+            >
+              Entendido!
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     <!-- </b-col> -->
   </b-row>
   
@@ -46,7 +75,7 @@
     </b-col>
   </b-row>
 
-  <NewUserModal @close="showNewUserModal = false" :show="showNewUserModal" />
+  <NewUserModal @close="closeNewUserModal" :show="showNewUserModal" />
 </b-container>
 </template>
 
@@ -62,6 +91,7 @@
     },
     mixins: [localData],
     data: () => ({
+      dialog: false,
       showNewUserModal: false,
       showFavs: false,
       value: 50,
@@ -113,6 +143,13 @@
       }
     },
     methods: {
+      closeNewUserModal () {
+        this.showNewUserModal = false
+        this.dialog = true
+      },
+      closeDialog () {
+        this.dialog = false
+      },
       filterFavs () {
         this.showFavs = !this.showFavs
         if (this.showFavs) {
@@ -257,5 +294,14 @@
 }
 .mdi-heart.red:hover {
   color: rgba(168, 6, 6, 0.39) !important;
+}
+button.btn.btn-secondary {
+  background-color: #2C64B4 !important;
+  color: white !important;
+}
+button.btn.btn-secondary:hover:not(.disabled) {
+  background-color: #2C64B4 !important;
+  color: #242424 !important;
+  opacity: 0.99;
 }
 </style>
